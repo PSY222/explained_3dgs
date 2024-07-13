@@ -19,10 +19,11 @@ from arguments import ModelParams
 from utils.camera_utils import cameraList_from_camInfos, camera_to_JSON
 
 class Scene:
-
+# Class which handles camera and point cloud data for a scene
     gaussians : GaussianModel
 
     def __init__(self, args : ModelParams, gaussians : GaussianModel, load_iteration=None, shuffle=True, resolution_scales=[1.0]):
+        # Resolution scale 1.0 means using original resolution
         """b
         :param path: Path to colmap scene main folder.
         """

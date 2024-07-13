@@ -9,6 +9,15 @@
 # For inquiries contact  george.drettakis@inria.fr
 #
 
+
+'''
+File to generate the renderings.
+
+Command below will help evaluating pre-trained model.
+Refer to the original 3DGS repository's readme.md for more details.
+python render.py -m <path to pre-trained model> -s <path to COLMAP dataset>
+
+'''
 import torch
 from scene import Scene
 import os
@@ -21,6 +30,8 @@ from argparse import ArgumentParser
 from arguments import ModelParams, PipelineParams, get_combined_args
 from gaussian_renderer import GaussianModel
 
+# Suitable for rendering single set views
+# Make directories for rendered images and Ground Truth(GT) images.
 def render_set(model_path, name, iteration, views, gaussians, pipeline, background):
     render_path = os.path.join(model_path, name, "ours_{}".format(iteration), "renders")
     gts_path = os.path.join(model_path, name, "ours_{}".format(iteration), "gt")
@@ -34,6 +45,7 @@ def render_set(model_path, name, iteration, views, gaussians, pipeline, backgrou
         torchvision.utils.save_image(rendering, os.path.join(render_path, '{0:05d}'.format(idx) + ".png"))
         torchvision.utils.save_image(gt, os.path.join(gts_path, '{0:05d}'.format(idx) + ".png"))
 
+# Apply rendering to either train or test set
 def render_sets(dataset : ModelParams, iteration : int, pipeline : PipelineParams, skip_train : bool, skip_test : bool):
     with torch.no_grad():
         gaussians = GaussianModel(dataset.sh_degree)
